@@ -33,4 +33,4 @@ async def on_message(message):
         await message.channel.send(str.strip("\n"))'''
 game = Game(client)
 
-client.run("ODQyODM4MDU4OTgyMDQ3NzQ4.YJ7IHA.eJcGDNsN7DVm0mB5OP0R0lIbgvI")
+client.run(os.getenv("TOKEN"))
