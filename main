@@ -1,0 +1,36 @@
+import discord, os, requests, json, Game, Player
+from deck_of_cards import deck_of_cards
+
+client = discord.Client()
+deck = deck_of_cards.DeckOfCards()
+commands = ["start", "join", "hit", "stand", "deck", "help"]
+
+'''@client.event
+async def on_ready():
+    print("We have logged in as {0.user}".format(client))'''
+
+'''@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content.startswith("$bj start".lower()):
+        await message.channel.send("Starting Game!".lower())
+        deck.reset_deck()
+    elif message.content.startswith("$bj join".lower()):
+        await message.channel.send("Player {} is joining the game!".format(message.author))
+    elif message.content.startswith("$bj hit".lower()):
+        card = deck.give_random_card()
+        await message.channel.send("Player {} hit a {}!".format(message.author, card.rank))
+        print(message)
+    elif message.content.startswith("$bj stand".lower()):
+        await message.channel.send("Player {} stands!".format(message.author))
+    elif message.content.startswith("$bj deck".lower()):
+        await message.channel.send("Current Deck: {}".format(len(deck.deck)))
+    elif message.content.startswith("$bj help".lower()):
+        str = "Commands:\n"
+        for cmd in commands:
+            str += (cmd + "\n")
+        await message.channel.send(str.strip("\n"))'''
+game = Game(client)
+
+client.run("ODQyODM4MDU4OTgyMDQ3NzQ4.YJ7IHA.eJcGDNsN7DVm0mB5OP0R0lIbgvI")

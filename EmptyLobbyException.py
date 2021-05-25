@@ -1,0 +1,2 @@
+class EmptyLobbyException:
+    pass
