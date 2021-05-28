@@ -4,8 +4,15 @@ from deck_of_cards import deck_of_cards
 class Player:
     def __init__(self, username):
         self.disc_username = username
+        self.username = self.disc_username.split("#")[0]
         self.count = 0
         self.cards = []  # contains the card objects
+
+    def __str__(self):
+        if len(self.cards) < 1:
+            return "{} - []".format(self.username)
+        else:
+            return "{} - [{}, {}]".format(self.username, self.cards[0].value, self.cards[1].value)
 
     def hit(self):
         pass
@@ -26,8 +33,25 @@ class Player:
         pass
 
     def add_card(self, card):
+        self.cards.append(card)
         self.count += card.rank
         if self.count > 21:
-            print("Busted GiGgItYgIgGtTyGiGgItY")
-            raise CountBustExeption
-        self.cards.append(card)
+            return False
+        return True
+
+    def clear_cards(self):
+        self.cards = []
+        self.count = 0
+
+    def get_username(self):
+        return self.username
+
+    def get_disc_name(self):
+        return self.disc_username
+
+    def cards_str(self):
+        ret = "["
+        for card in self.cards:
+            ret += (str(card.value) + ", ")
+        ret = ret.strip(", ")
+        return ret + "]"
