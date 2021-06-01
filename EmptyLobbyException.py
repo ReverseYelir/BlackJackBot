@@ -1,2 +1,2 @@
-class EmptyLobbyException:
+class EmptyLobbyException(BaseException):
     pass

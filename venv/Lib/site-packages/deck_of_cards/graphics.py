@@ -1,0 +1,138 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+# Deck of cards - Graphics
+#
+# Author: Simon Lachaîne
+
+import itertools
+from PIL import Image
+import numpy as np
+
+import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+
+class CardImages(object):
+    """
+    """
+    def __init__(self, source_img_path):
+        self.source_img_path = source_img_path
+        self.source_img = self._open_source()
+        self.cards = {}  # (suit, rank): img
+
+    def _open_source(self):
+        """
+        """
+        try:
+            self.source_img = Image.open(self.source_img_path)
+            logging.debug("Source image opened")
+            return self.source_img
+
+        except IOError as e:
+            logging.warning("An error occurred while opening the source image:\n{}".format(e))
+
+    def _crop_source(self, left, upper, right, lower, suit, rank):
+        """
+        """
+        try:
+            int(left)
+            int(upper)
+            int(right)
+            int(lower)
+            int(suit)
+            int(rank)
+
+        except TypeError as e:
+            logging.warning("The arguments must be integers:\n{}".format(e))
+
+        else:
+            box = (left, upper, right, lower)
+            region = self.source_img.crop(box)
+            self.cards[(suit, rank)] = region
+
+            # for dev only
+            region.save(
+                "cards/{suit}-{rank}.png".format(
+                    suit=suit,
+                    rank=rank
+                )
+            )
+            # logging.debug("Card image saved")
+
+    def create_cards(self):
+        """
+        """
+        points_left = list(np.linspace(0, 2179 - 167.54, 13))
+        points_left = points_left * 5
+        points_upper = list(np.linspace(0, 1217 - 243.2, 5))
+        points_upper = points_upper * 13
+        points_upper.sort()
+        points_right = list(np.linspace(167.54, 2179, 13))
+        points_right = points_right * 5
+        points_lower = list(np.linspace(243.2, 1217, 5))
+        points_lower = points_lower * 13
+        points_lower.sort()
+
+        ###
+        coordinates = []
+        for x in range(55):
+            coordinates.append(
+                (
+                    points_left[x],
+                    points_upper[x],
+                    points_right[x],
+                    points_lower[x]
+                )
+            )
+        # logging.debug("Coordinates")
+        # logging.debug(coordinates)
+
+        suits_ranks = [
+            (
+                i % 4,  # suit
+                13 if i % 13 == 0 else i % 13  # rank
+            )
+            for i in range(1, 53)
+        ]
+        suits_ranks.sort()
+        joker_bw = (4, 14)
+        joker_color = (4, 15)
+        cover = (5, 16)
+        suits_ranks.append(joker_bw)
+        suits_ranks.append(joker_color)
+        suits_ranks.append(cover)
+        # logging.debug("suits_ranks")
+        # logging.debug(suits_ranks)
+
+        parameters = zip(
+            coordinates,
+            [suit_rank for suit_rank in suits_ranks]
+        )
+        print("\nparameters:\n")
+        # print(parameters)
+
+        for p in parameters:
+            logging.debug(p)
+            self._crop_source(
+                left=p[0][0],
+                upper=p[0][1],
+                right=p[0][2],
+                lower=p[0][3],
+                suit=p[1][0],
+                rank=p[1][1]
+            )
+
+
+def main():
+    app = CardImages("cards.png")
+    app.create_cards()
+
+    # for card in app.cards:
+    #     print(card)
+
+
+if __name__ == "__main__":
+    main()

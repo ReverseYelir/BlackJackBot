@@ -18,7 +18,6 @@ class Game():
     def __str__(self):
         retStr = "```\t\t\t\t\t\tThe Table - {}\n\n".format(str(self.dealer))
         for player in self.players:
-            playerStr = ""
             retStr += ("\t\t\t\t\t\t" + str(player) + "\n")
         return retStr + "```"
 

@@ -2,17 +2,21 @@ import discord, os, requests, json, Dealer, CountBustExeption
 from deck_of_cards import deck_of_cards
 
 class Player:
-    def __init__(self, username):
+    def __init__(self, username, next=None):
         self.disc_username = username
         self.username = self.disc_username.split("#")[0]
         self.count = 0
         self.cards = []  # contains the card objects
+        self.next = next
 
     def __str__(self):
         if len(self.cards) < 1:
             return "{} - []".format(self.username)
         else:
-            return "{} - [{}, {}]".format(self.username, self.cards[0].value, self.cards[1].value)
+            retStr = "{} - [".format(self.username)
+            for card in self.cards:
+                retStr += (str(card.value) + ", ")
+            return retStr.rstrip(", ") + "]"
 
     def hit(self):
         pass
