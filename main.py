@@ -164,7 +164,7 @@ async def hit(message):
             if dealer_turn(message) > 21:
                 await message.channel.send("The Dealer busted with {}".format(str(dealer.count)))
             else:
-                await message.channel.send("The Dealer ended with {}".format(str(dealer.count)))
+                await message.channel.send("The Dealer ended with {}\n".format(str(dealer.count)))
             results = comp_dealer()
             resultStr = "Winners:\n"
             for winner in results[0]:
@@ -195,7 +195,7 @@ async def stand(message):
             if dealer_turn(message) > 21:
                 await message.channel.send("The Dealer busted with {}".format(str(dealer.count)))
             else:
-                await message.channel.send("The Dealer ended with {}".format(str(dealer.count)))
+                await message.channel.send("The Dealer ended with {}\n".format(str(dealer.count)))
             results = comp_dealer()
             resultStr = "Winners:\n"
             for winner in results[0]:
