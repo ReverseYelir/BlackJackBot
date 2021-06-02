@@ -24,7 +24,10 @@ class Dealer:
     def self_draw(self):
         card = self.draw_card()
         self.cards.append(card)
-        self.count += card.value
+        if card.value > 10:
+            self.count += 10
+        else:
+            self.count += card.value
     '''
     Deals a new hand to each player in a linked list: head
     '''

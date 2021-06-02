@@ -8,21 +8,24 @@ class Player:
         self.count = 0
         self.cards = []  # contains the card objects
         self.next = next
+        self.bank = 0
+        self.bet = 0
+
+    def cards_str(self):
+        ret = "["
+        for card in self.cards:
+            if card.value > 10:
+                ret += (str(10) + ", ")
+            else:
+                ret += (str(card.value) + ", ")
+        ret = ret.strip(", ")
+        return ret + "]"
 
     def __str__(self):
-        if len(self.cards) < 1:
-            return "{} - []".format(self.username)
-        else:
-            retStr = "{} - [".format(self.username)
-            for card in self.cards:
-                retStr += (str(card.value) + ", ")
-            return retStr.rstrip(", ") + "]"
+        return "{} - {}".format(self.username, self.cards_str())
 
-    def hit(self):
-        pass
-
-    def stand(self):
-        pass
+    def fund(self, n):
+        self.bank += n
 
     def get_hand(self):
         return self.cards
@@ -30,15 +33,19 @@ class Player:
     def get_count(self):
         return self.count
 
-    def bet(self):
-        pass
+    def bet(self, n):
+        self.bet = n
+        self.bank -= n
 
     def raise_bet(self):
         pass
 
     def add_card(self, card):
         self.cards.append(card)
-        self.count += card.rank
+        if card.rank > 10:
+            self.count += 10
+        else:
+            self.count += card.rank
         if self.count > 21:
             return False
         return True
@@ -53,9 +60,3 @@ class Player:
     def get_disc_name(self):
         return self.disc_username
 
-    def cards_str(self):
-        ret = "["
-        for card in self.cards:
-            ret += (str(card.value) + ", ")
-        ret = ret.strip(", ")
-        return ret + "]"
