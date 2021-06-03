@@ -3,6 +3,7 @@ import CountBustExeption, EmptyLobbyException
 from deck_of_cards import deck_of_cards
 from dotenv import load_dotenv
 
+
 class Game():
     def __init__(self, bot):
         self.bot = bot
@@ -33,7 +34,7 @@ class Game():
     def next_turn(self, message):
         self.player_i += 1
         if len(self.players) < 1:
-                print("Empty Table")
+            print("Empty Table")
         elif self.player_i == len(self.players):
             self.dealer_turn(message)
         else:
