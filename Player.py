@@ -1,5 +1,6 @@
-import discord, os, requests, json, Dealer, CountBustExeption
+import discord, os, requests, json, Dealer
 from deck_of_cards import deck_of_cards
+
 
 class Player:
     def __init__(self, username, next=None):
@@ -9,7 +10,7 @@ class Player:
         self.cards = []  # contains the card objects
         self.next = next
         self.bank = 0
-        self.bet = 0
+        self.curr_bet = 0
 
     def cards_str(self):
         ret = "["
@@ -22,7 +23,7 @@ class Player:
         return ret + "]"
 
     def __str__(self):
-        return "{} - {}".format(self.username, self.cards_str())
+        return "{} {} ${}".format(self.cards_str(), self.username, str(self.bank))
 
     def fund(self, n):
         self.bank += n
@@ -34,7 +35,7 @@ class Player:
         return self.count
 
     def bet(self, n):
-        self.bet = n
+        self.curr_bet = int(n)
         self.bank -= n
 
     def raise_bet(self):

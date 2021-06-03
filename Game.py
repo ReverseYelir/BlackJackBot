@@ -1,5 +1,4 @@
 import discord, os, requests, json, Dealer, dotenv
-import CountBustExeption, EmptyLobbyException
 from deck_of_cards import deck_of_cards
 from dotenv import load_dotenv
 
