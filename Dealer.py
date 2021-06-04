@@ -17,7 +17,7 @@ class Dealer:
 
     def draw_card(self):
         if len(self.deck.deck) < 1:
-            self.deck = deck_of_cards.DeckOfCards().shuffle_deck()
+            self.deck = deck_of_cards.DeckOfCards()
             self.deck.shuffle_deck()
         return self.deck.give_random_card()
 
@@ -33,19 +33,25 @@ class Dealer:
     '''
     def deal(self, head):
         if self.deck.__sizeof__() < 2:
-            self.deck = deck_of_cards.DeckOfCards().shuffle_deck()
+            self.deck = deck_of_cards.DeckOfCards()
             self.deck.shuffle_deck()
         curr = head
         while curr:
             curr.clear_cards()
-            curr.add_card(self.deck.give_random_card())
-            curr.add_card(self.deck.give_random_card())
+            try:
+                curr.add_card(self.deck.give_random_card())
+                curr.add_card(self.deck.give_random_card())
+            except IndexError:
+                self.deck = deck_of_cards.DeckOfCards()
+                self.deck.shuffle_deck()
+                curr.add_card(self.deck.give_random_card())
+                curr.add_card(self.deck.give_random_card())
             curr = curr.next
         self.new_hand()
 
     def hit(self, player):
         if len(self.deck.deck) < 1:
-            self.deck = deck_of_cards.DeckOfCards().shuffle_deck()
+            self.deck = deck_of_cards.DeckOfCards()
             self.deck.shuffle_deck()
         return player.add_card(self.deck.give_random_card())
 
