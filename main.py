@@ -39,13 +39,11 @@ TOKEN = os.getenv("TOKEN")
 
 -----------------------------------------------------------                                                      
 '''
-game = None
 deck = deck_of_cards.DeckOfCards()
 deck.shuffle_deck()
 dealer = Dealer.Dealer(deck)
 head = None
 curr_player = None
-ADMIN_ROLE = "Captain Dumbass"
 have_bet = []
 num_players = 0
 has_started = False
@@ -84,6 +82,8 @@ THINKING_GIFS = [
     "https://media.giphy.com/media/2bYewTk7K2No1NvcuK/giphy.gif"
 ]
 DEALER_COMP_TIME = 4.0
+ADMIN_ROLE = "Captain Dumbass"
+
 
 ''''
 ---------------------------------------------------------
@@ -102,8 +102,6 @@ Begin differs from start as it is used to begin a round. This is used at the ver
 game OR when someone joins the table via "-join". Begin must be used once everyone is done joining the
 table. Being is only neccesary when > 1 person/people join the table.
 '''
-
-
 @bot.command(name='begin', brief="Flags players are done joining for the round")
 async def begin(message):
     await game_begin(message)
@@ -326,8 +324,6 @@ Adds a newly created player object to the linked list representing the players a
 
 :param player_obj - The player to be added to the table
 '''
-
-
 async def add_player(player_obj):
     global head, num_players
     if head is None:
@@ -348,8 +344,6 @@ Ensure all players have bet
 
 :return True if all players have bet, False otherwise
 '''
-
-
 async def all_bet():
     global curr_player, head
     curr = head
@@ -367,8 +361,6 @@ Calculates the winners/ties/loser of the round and sends feedback to the users
 :param message - The discord.Message instance sent by the client
 :return results - a 2d list containing the [[winners], [ties], [losers]]
 '''
-
-
 async def comp_dealer(message):
     global have_bet, prev_gif, TITLES
     await send_dealer_feedback(message)
@@ -404,8 +396,6 @@ async def comp_dealer(message):
 '''
 Executes the dealer's turn by drawing cards until a bust or a hand of at least 17
 '''
-
-
 def dealer_turn():
     dealer.hidden = False
     while dealer.count < 17:
@@ -419,8 +409,6 @@ Attempts to find a player at the table via discord username or nickname
 :param disc_username - String representing a discord username or nickname
 :return Player object, None if not at the table
 '''
-
-
 def find_player(disc_username):
     curr = head
     while curr:
@@ -435,8 +423,6 @@ Begins the game ONCE ALL PLAYERS HAVE BET or -begin is called
 
 :param message - The discord.Message instance sent via the client
 '''
-
-
 async def game_begin(message):
     global curr_player, dealer, has_started, have_bet
     have_bet = []
@@ -453,8 +439,6 @@ async def game_begin(message):
 '''
 Executes the hit action by having the dealer hit a player
 '''
-
-
 def game_hit(message):
     return dealer.hit(curr_player)
 
@@ -462,8 +446,6 @@ def game_hit(message):
 '''
 Resets a game with a newly shuffled deck and an empty table
 '''
-
-
 def game_reset():
     global head, deck, num_players, has_started
     head = None
@@ -478,8 +460,6 @@ Prompts and collects bets from players
 
 :param message - The discord.Message instance sent via the client
 '''
-
-
 async def get_bets(message):
     if not await all_bet():
         await message.channel.send("Place your bets.")
@@ -488,8 +468,6 @@ async def get_bets(message):
 '''
 Begins a new round by resetting everyone's bets and hands
 '''
-
-
 async def new_round():
     global curr_player, head
     curr_player = head
@@ -502,8 +480,6 @@ Tells the users who still need to bet before the round can being
 
 :param message - The discord.Message instance sent via the client
 '''
-
-
 async def notify_to_bet(message):
     curr = head
     while curr:
@@ -512,6 +488,12 @@ async def notify_to_bet(message):
         curr = curr.next
 
 
+
+'''
+Removes a player with a given discord username or nickname from the table
+
+:param disc_username - String of a player's discord username (include #) or their nickname
+'''
 async def remove_player(disc_username):
     global head, num_players
     curr = head
@@ -534,8 +516,6 @@ do not feel instantaneous and short.
 
 @:param message - The discord message object send by the server
 '''
-
-
 async def send_dealer_feedback(message):
     global prev_gif
     title = TITLES[random.randint(0, len(TITLES) - 1)]
@@ -560,8 +540,6 @@ Returns a string representation of the table, which contains info on the dealer 
     ex: 
         "The Dealer - [*, 1]\n\n\t\t[] Yelír $0"
 '''
-
-
 def to_str():
     retStr = "The Dealer - {}\n\n".format(str(dealer))
     curr = head
